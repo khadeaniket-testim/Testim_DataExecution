@@ -22,7 +22,7 @@ jobs:
           testim \
             --token "FbRwDodQGe0fmK7kfbySfQkH4hcGCY3OXQSEhkHvo44HRGV1DL" \
             --project "5o34e3giDMkFw4u6R2Ef" \
-            --grid "testim-grid-support" \
+            --grid "testim-ha-grid" \
             --branch "Aniket Khade" \
             --label "GitHub" \
             --params-file data/params.json \

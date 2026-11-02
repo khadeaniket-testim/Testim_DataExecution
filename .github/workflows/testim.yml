@@ -1,14 +1,50 @@
 name: Testim E2E
-on: [push]
+
+on:
+  push:
+    paths-ignore:
+      - 'test-results/**'
+  workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
-    run-testimio-cli:
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@v2
-            - uses: actions/setup-node@v4
-              with:
-                node-version: '24'
-                # You can also change 'lts' to any supported LTS Node.js version.
-            - run: npm install -g @testim/testim-cli
-            - run: testim --token "FbRwDodQGe0fmK7kfbySfQkH4hcGCY3OXQSEhkHvo44HRGV1DL" --project "5o34e3giDMkFw4u6R2Ef" --grid "testim-ha-grid" --branch "Aniket Khade" --label "GitHub" --params-file data/params.json
+  run-testimio-cli:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - run: npm install -g @testim/testim-cli
+
+      - name: Run Testim tests
+        run: |
+          mkdir -p test-results
+          testim \
+            --token "FbRwDodQGe0fmK7kfbySfQkH4hcGCY3OXQSEhkHvo44HRGV1DL" \
+            --project "5o34e3giDMkFw4u6R2Ef" \
+            --grid "testim-ha-grid" \
+            --branch "Aniket Khade" \
+            --label "GitHub" \
+            --params-file data/params.json \
+            --report-file test-results/testim-report.xml
+
+      - name: Upload report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: testim-report
+          path: test-results/
+
+      - name: Commit report to repo
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add test-results/
+          git commit -m "Update Testim report [skip ci]" || echo "No changes to commit"
+          git push

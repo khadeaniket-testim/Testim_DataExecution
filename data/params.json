@@ -1,4 +1,12 @@
 {
-  "username": "demo_user",
-  "environment": "staging"
+  "FirstName": "John",
+  "LastName": "Doe",
+  "EmailAddress": "john.doe234e3@example.com",
+  "Password": "Test@123",
+  "Address1": "123 Test Street",
+  "ZipCode": "96799",
+  "PhoneNumber": "6845550100",
+  "City": "Pago Pago",
+  "Country": "United States",
+  "State": "American Samoa"
 }

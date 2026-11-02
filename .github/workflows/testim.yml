@@ -18,6 +18,7 @@ jobs:
 
       - name: Run Testim tests
         run: |
+          mkdir -p test-results
           testim \
             --token "FbRwDodQGe0fmK7kfbySfQkH4hcGCY3OXQSEhkHvo44HRGV1DL" \
             --project "5o34e3giDMkFw4u6R2Ef" \

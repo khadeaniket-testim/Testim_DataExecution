@@ -1,1 +1,35 @@
+name: Testim E2E
 
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  run-testimio-cli:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+
+      - run: npm install -g @testim/testim-cli
+
+      - name: Run Testim tests
+        run: |
+          testim \
+            --token "FbRwDodQGe0fmK7kfbySfQkH4hcGCY3OXQSEhkHvo44HRGV1DL" \
+            --project "5o34e3giDMkFw4u6R2Ef" \
+            --grid "testim-grid-support" \
+            --branch "Aniket Khade" \
+            --label "GitHub" \
+            --params-file data/params.json \
+            --report-file test-results/testim-report.xml
+
+      - name: Upload report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: testim-report
+          path: test-results/
